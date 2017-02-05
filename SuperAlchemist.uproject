@@ -2,5 +2,27 @@
 	"FileVersion": 3,
 	"EngineAssociation": "4.15",
 	"Category": "",
-	"Description": ""
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "SuperAlchemist",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Paper2D",
+				"Engine"
+			]
+		},
+		{
+			"Name": "SuperAlchemistEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"Paper2D",
+				"Engine",
+				"SuperAlchemist",
+				"UnrealEd"
+			]
+		}
+	]
 }

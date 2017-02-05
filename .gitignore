@@ -65,3 +65,6 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Chris's Weird .bat files
+u17Gen.bat
