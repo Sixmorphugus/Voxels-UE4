@@ -7,9 +7,9 @@
 #include "PaperCompassComponent.generated.h"
 
 /**
- * This is a section of character's body that can:
+ * This is a section of an object's body that can:
  * - Rotate in 2, 4, or 8 directions
- * - Hold a number of animations
+ * - Hold a number of animations for each
  */
 UCLASS(meta = (BlueprintSpawnableComponent), HideCategories = ("Sprite"))
 class SUPERALCHEMIST_API UPaperCompassComponent : public UPaperFlipbookComponent
@@ -23,10 +23,11 @@ public:
 	EDirectionalDirections GetViewedDirection();
 
 public:
-	// Properties
-	UPROPERTY(EditAnywhere, Category = "Section")
+	// Directional sprite to use
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Section")
 	EDirectionalDirections WorldDirection;
 
-	UPROPERTY(EditAnywhere, Category = "Section")
+	// Source Compass Flipbook
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Section")
 	UPaperCompassFlipbook* CompassFlipbook;
 };
