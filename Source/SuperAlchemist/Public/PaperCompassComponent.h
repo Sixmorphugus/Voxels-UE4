@@ -3,7 +3,7 @@
 #pragma once
 
 #include "PaperFlipbookComponent.h"
-#include "PaperCompassFlipbooks.h"
+#include "PaperCompassFlipbook.h"
 #include "PaperCompassComponent.generated.h"
 
 /**
@@ -14,13 +14,14 @@
 UCLASS(meta = (BlueprintSpawnableComponent), HideCategories = ("Sprite"))
 class SUPERALCHEMIST_API UPaperCompassComponent : public UPaperFlipbookComponent
 {
-	GENERATED_BODY()
-	UPaperCompassComponent(); // (todo: PrimaryComponentTick.bCanEverTick = true;)
+	GENERATED_UCLASS_BODY()
 	
 public:
 	// Functions
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e);
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
-	
+	EDirectionalDirections GetViewedDirection();
+
 public:
 	// Properties
 	UPROPERTY(EditAnywhere, Category = "Section")
