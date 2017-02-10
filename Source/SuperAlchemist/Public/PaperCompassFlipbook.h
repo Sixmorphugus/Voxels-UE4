@@ -5,31 +5,39 @@
 #include "PaperFlipbook.h"
 #include "PaperCompassFlipbook.generated.h"
 
-// Which directions can this body part rotate - rotation directions of a character will be locked to ones that fit into the category.
+// Which directions can this object rotate - rotation directions of a character will be locked to ones that fit into the category.
 UENUM(BlueprintType)
 enum class EDirectionalCapabilities : uint8
 {
-	RC_Detect 	UMETA(DisplayName = "Unspecified"),
-	RC_FrontBack 	UMETA(DisplayName = "Front/Back"),
-	RC_Compass 	UMETA(DisplayName = "Compass"),
-	RC_ExtendedCompass	UMETA(DisplayName = "Extended Compass")
+	DC_Detect 	UMETA(DisplayName = "Unspecified"),
+	DC_FrontBack 	UMETA(DisplayName = "Front/Back"),
+	DC_Compass 	UMETA(DisplayName = "Compass"),
+	DC_ExtendedCompass	UMETA(DisplayName = "Extended Compass")
+};
+
+// How far can some object rotate from another's direction
+UENUM(BlueprintType)
+enum class EDirectionalOffset : uint8
+{
+	DO_90 	UMETA(DisplayName = "90"),
+	DO_180 	UMETA(DisplayName = "180 (not limited)"),
 };
 
 // Which direction is a body part facing on the extended compass?
 UENUM(BlueprintType)
 enum class EDirectionalDirections : uint8
 {
-	RD_North 	UMETA(DisplayName = "North"),
-	RD_NorthEast 	UMETA(DisplayName = "North East"),
-	RD_East 	UMETA(DisplayName = "East"),
-	RD_SouthEast 	UMETA(DisplayName = "South East"),
-	RD_South 	UMETA(DisplayName = "South"),
-	RD_SouthWest 	UMETA(DisplayName = "South West"),
-	RD_West 	UMETA(DisplayName = "West"),
-	RD_NorthWest	UMETA(DisplayName = "North West")
+	DD_North 	UMETA(DisplayName = "North"),
+	DD_NorthEast 	UMETA(DisplayName = "North East"),
+	DD_East 	UMETA(DisplayName = "East"),
+	DD_SouthEast 	UMETA(DisplayName = "South East"),
+	DD_South 	UMETA(DisplayName = "South"),
+	DD_SouthWest 	UMETA(DisplayName = "South West"),
+	DD_West 	UMETA(DisplayName = "West"),
+	DD_NorthWest	UMETA(DisplayName = "North West")
 };
 
-UCLASS()
+UCLASS(BlueprintType)
 class SUPERALCHEMIST_API UPaperCompassFlipbook : public UObject {
 	GENERATED_UCLASS_BODY()
 

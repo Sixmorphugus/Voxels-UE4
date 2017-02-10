@@ -17,6 +17,8 @@ void UPaperCompassComponent::PostEditChangeProperty(struct FPropertyChangedEvent
 	{
 		if (CompassFlipbook)
 			SourceFlipbook = CompassFlipbook->GetPaperFlipbook(GetViewedDirection());
+
+
 	}
 
 	Super::PostEditChangeProperty(e);

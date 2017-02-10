@@ -18,43 +18,44 @@ UPaperCompassFlipbook::UPaperCompassFlipbook(const FObjectInitializer& ObjectIni
 
 EDirectionalCapabilities UPaperCompassFlipbook::GetDirectionalCapability()
 {
-	if (DirectionalCapability != EDirectionalCapabilities::RC_Detect)
+	if (DirectionalCapability != EDirectionalCapabilities::DC_Detect)
 		return DirectionalCapability;
 
 	// we have to detect it if it isn't specified
 	if (North && NorthEast && East && SouthEast && South && SouthWest && West && NorthWest)
-		return EDirectionalCapabilities::RC_ExtendedCompass;
+		return EDirectionalCapabilities::DC_ExtendedCompass;
 	else if(North && East && South && West)
-		return EDirectionalCapabilities::RC_Compass;
+		return EDirectionalCapabilities::DC_Compass;
 	else
-		return EDirectionalCapabilities::RC_FrontBack;
+		return EDirectionalCapabilities::DC_FrontBack;
 }
 
 UPaperFlipbook* UPaperCompassFlipbook::GetPaperFlipbook(EDirectionalDirections Direction)
 {
+	// TODO: take directional capability into account
 	switch (Direction) {
 	default:
 		return North;
 		break;
-	case EDirectionalDirections::RD_NorthEast:
+	case EDirectionalDirections::DD_NorthEast:
 		return NorthEast;
 		break;
-	case EDirectionalDirections::RD_East:
+	case EDirectionalDirections::DD_East:
 		return East;
 		break;
-	case EDirectionalDirections::RD_SouthEast:
+	case EDirectionalDirections::DD_SouthEast:
 		return SouthEast;
 		break;
-	case EDirectionalDirections::RD_South:
+	case EDirectionalDirections::DD_South:
 		return South;
 		break;
-	case EDirectionalDirections::RD_SouthWest:
+	case EDirectionalDirections::DD_SouthWest:
 		return SouthWest;
 		break;
-	case EDirectionalDirections::RD_West:
+	case EDirectionalDirections::DD_West:
 		return West;
 		break;
-	case EDirectionalDirections::RD_NorthWest:
+	case EDirectionalDirections::DD_NorthWest:
 		return NorthWest;
 		break;
 	}
