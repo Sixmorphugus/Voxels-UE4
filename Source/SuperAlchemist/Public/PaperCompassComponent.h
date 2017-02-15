@@ -21,20 +21,30 @@ private:
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e);
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
-public:
-	UFUNCTION(BlueprintCallable)
-	EDirectionalDirections GetViewedDirection();
+	void UpdateSourceFlipbook();
 
 public:
-	// Directional sprite to use
+	UFUNCTION(BlueprintCallable)
+	EDirectionalDirections GetWorldDirection();
+	UFUNCTION(BlueprintCallable)
+	void SetWorldDirection(const EDirectionalDirections& dd);
+
+	UFUNCTION(BlueprintCallable)
+	UPaperCompassFlipbook* GetCompassFlipbook();
+	UFUNCTION(BlueprintCallable)
+	void SetCompassFlipbook(UPaperCompassFlipbook* dd);
+
+public:
+	// Additional Compass Flipbooks (public)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Paper Compass")
+	TArray<UPaperCompassFlipbook*> AdditionalCompassFlipbooks;
+
+private:
+	// Directional sprite to use
+	UPROPERTY(EditAnywhere, Category = "Paper Compass")
 	EDirectionalDirections WorldDirection;
 
 	// Source Compass Flipbook
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Paper Compass")
+	UPROPERTY(EditAnywhere, Category = "Paper Compass")
 	UPaperCompassFlipbook* CompassFlipbook;
-
-	// Additional Compass Flipbooks
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Paper Compass")
-	TArray<UPaperCompassFlipbook*> AdditionalCompassFlipbooks;
 };

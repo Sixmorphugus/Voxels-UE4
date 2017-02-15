@@ -15,13 +15,8 @@ void UPaperCompassComponent::PostEditChangeProperty(struct FPropertyChangedEvent
 	FName PropertyName = (e.Property != NULL) ? e.Property->GetFName() : NAME_None;
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(UPaperCompassComponent, WorldDirection) || PropertyName == GET_MEMBER_NAME_CHECKED(UPaperCompassComponent, CompassFlipbook))
 	{
-		if (CompassFlipbook)
-			SourceFlipbook = CompassFlipbook->GetPaperFlipbook(GetViewedDirection());
-
-
+		UpdateSourceFlipbook();
 	}
-
-	Super::PostEditChangeProperty(e);
 }
 
 void UPaperCompassComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
@@ -29,7 +24,30 @@ void UPaperCompassComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-EDirectionalDirections UPaperCompassComponent::GetViewedDirection()
+void UPaperCompassComponent::UpdateSourceFlipbook()
+{
+	if (CompassFlipbook)
+		SourceFlipbook = CompassFlipbook->GetPaperFlipbook(GetWorldDirection());
+}
+
+EDirectionalDirections UPaperCompassComponent::GetWorldDirection()
 {
 	return WorldDirection;
+}
+
+void UPaperCompassComponent::SetWorldDirection(const EDirectionalDirections& dd)
+{
+	WorldDirection = dd;
+	UpdateSourceFlipbook();
+}
+
+UPaperCompassFlipbook* UPaperCompassComponent::GetCompassFlipbook()
+{
+	return CompassFlipbook;
+}
+
+void UPaperCompassComponent::SetCompassFlipbook(UPaperCompassFlipbook* dd)
+{
+	CompassFlipbook = dd;
+	UpdateSourceFlipbook();
 }

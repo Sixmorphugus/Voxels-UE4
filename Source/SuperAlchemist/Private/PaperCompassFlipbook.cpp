@@ -32,31 +32,56 @@ EDirectionalCapabilities UPaperCompassFlipbook::GetDirectionalCapability()
 
 UPaperFlipbook* UPaperCompassFlipbook::GetPaperFlipbook(EDirectionalDirections Direction)
 {
-	// TODO: take directional capability into account
 	switch (Direction) {
 	default:
 		return North;
 		break;
+
 	case EDirectionalDirections::DD_NorthEast:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return North;
+		else if (GetDirectionalCapability() == EDirectionalCapabilities::DC_Compass)
+			return East;
+
 		return NorthEast;
-		break;
+
 	case EDirectionalDirections::DD_East:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return North;
+
 		return East;
-		break;
+
 	case EDirectionalDirections::DD_SouthEast:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return South;
+		else if (GetDirectionalCapability() == EDirectionalCapabilities::DC_Compass)
+			return East;
+
 		return SouthEast;
-		break;
+
 	case EDirectionalDirections::DD_South:
 		return South;
-		break;
+
 	case EDirectionalDirections::DD_SouthWest:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return South;
+		else if (GetDirectionalCapability() == EDirectionalCapabilities::DC_Compass)
+			return West;
+
 		return SouthWest;
-		break;
+
 	case EDirectionalDirections::DD_West:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return North;
+
 		return West;
-		break;
+
 	case EDirectionalDirections::DD_NorthWest:
+		if (GetDirectionalCapability() == EDirectionalCapabilities::DC_FrontBack)
+			return North;
+		else if (GetDirectionalCapability() == EDirectionalCapabilities::DC_Compass)
+			return West;
+
 		return NorthWest;
-		break;
 	}
 }
