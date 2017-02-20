@@ -14,7 +14,7 @@ FVoxelMapPager::FVoxelMapPager()
 }
 
 // Called when a new chunk is paged in
-// This function will automatically generate our voxel-based terrain from simplex noise
+// This function will automatically generate our voxel-based terrain
 void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialDensityPair44>::Chunk* Chunk)
 {
 	// Now that we have our noise setup, let's loop over our chunk and apply it.
@@ -22,7 +22,7 @@ void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialD
 	{
 		for (int y = region.getLowerY(); y <= region.getUpperY(); y++)
 		{
-			int32 towerHeight = (FMath::Rand() % 2) + 1;
+			int32 towerHeight = 1;
 
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				MaterialDensityPair44 Voxel;
@@ -126,13 +126,16 @@ void AVoxelMapActor::UpdateMesh()
 				const FVector Edge01 = FPolyVoxVector(Vertex1.position - Vertex0.position);
 				const FVector Edge02 = FPolyVoxVector(Vertex2.position - Vertex0.position);
 
-				const FVector TangentX = Edge01.GetSafeNormal();
-				FVector TangentZ = (Edge01 ^ Edge02).GetSafeNormal();
+				FVector Normal = (Edge01 ^ Edge02).GetSafeNormal();
+				FVector Tangent = Edge01.GetSafeNormal();
 
-				for (int32 i = 0; i < 3; i++)
+				UE_LOG(LogTemp, Warning, TEXT("%s"),
+					*Tangent.ToString());
+
+				for (int32 v = 0; v < 3; v++)
 				{
-					Tangents.Add(FProcMeshTangent(TangentX, false));
-					Normals.Add(TangentZ);
+					Tangents.Add(FProcMeshTangent(Tangent, false));
+					Normals.Add(Normal);
 				}
 			}
 		}
