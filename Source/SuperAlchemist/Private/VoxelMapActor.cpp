@@ -22,15 +22,26 @@ void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialD
 	{
 		for (int y = region.getLowerY(); y <= region.getUpperY(); y++)
 		{
-			int32 towerHeight = FMath::Rand() % 2;
+			int32 towerHeight = (FMath::Rand() % 2) + 1;
 
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				MaterialDensityPair44 Voxel;
 
-				bool bSolid = (z < (towerHeight*2));
+				bool bSolid = (z < towerHeight);
 
-				Voxel.setDensity(bSolid ? 255 : 0);
-				Voxel.setMaterial(bSolid ? 1 : 0);
+				int32 zMat = z+1;
+
+				if (zMat > towerHeight)
+					zMat = towerHeight;
+
+				if (bSolid) {
+					Voxel.setDensity(255);
+					Voxel.setMaterial(zMat);
+				}
+				else {
+					Voxel.setDensity(0);
+					Voxel.setMaterial(0);
+				}
 
 				// Voxel position within a chunk always start from zero. So if a chunk represents region (4, 8, 12) to (11, 19, 15)
 				// then the valid chunk voxels are from (0, 0, 0) to (7, 11, 3). Hence we subtract the lower corner position of the
@@ -74,45 +85,60 @@ void AVoxelMapActor::UpdateMesh()
 	auto ExtractedMesh = extractCubicMesh(VoxelVolume.Get(), ToExtract);
 	auto DecodedMesh = decodeMesh(ExtractedMesh);
 
-	// Define variables to pass into the CreateMeshSection function
-	auto Vertices = TArray<FVector>();
-	auto Indices = TArray<int32>();
-	auto Normals = TArray<FVector>();
-	auto UV0 = TArray<FVector2D>();
-	auto Colors = TArray<FColor>();
-	auto Tangents = TArray<FProcMeshTangent>();
-	auto s = 16.f;
-
-	// Loop over all of the triangle vertex indices
-	for (uint32 i = 0; i < DecodedMesh.getNoOfIndices() - 2; i += 3)
+	// This isn't the most efficient way to handle this, but it works.
+	// To improve the performance of this code, you'll want to modify 
+	// the code so that you only run this section of code once.
+	for (int32 Material = 0; Material < TerrainMaterials.Num(); Material++)
 	{
-		// We need to add the vertices of each triangle in reverse or the mesh will be upside down
-		auto Index = DecodedMesh.getIndex(i + 2);
-		auto Vertex2 = DecodedMesh.getVertex(Index);
-		Indices.Add(Vertices.Add(FPolyVoxVector(Vertex2.position) * s));
+		// Define variables to pass into the CreateMeshSection function
+		auto Vertices = TArray<FVector>();
+		auto Indices = TArray<int32>();
+		auto Normals = TArray<FVector>();
+		auto UV0 = TArray<FVector2D>();
+		auto Colors = TArray<FColor>();
+		auto Tangents = TArray<FProcMeshTangent>();
 
-		Index = DecodedMesh.getIndex(i + 1);
-		auto Vertex1 = DecodedMesh.getVertex(Index);
-		Indices.Add(Vertices.Add(FPolyVoxVector(Vertex1.position) * s));
-
-		Index = DecodedMesh.getIndex(i);
-		auto Vertex0 = DecodedMesh.getVertex(Index);
-		Indices.Add(Vertices.Add(FPolyVoxVector(Vertex0.position) * s));
-
-		// Calculate the tangents of our triangle
-		const FVector Edge01 = FPolyVoxVector(Vertex1.position - Vertex0.position);
-		const FVector Edge02 = FPolyVoxVector(Vertex2.position - Vertex0.position);
-
-		const FVector TangentX = Edge01.GetSafeNormal();
-		FVector TangentZ = (Edge01 ^ Edge02).GetSafeNormal();
-
-		for (int32 j = 0; j < 3; j++)
+		// Loop over all of the triangle vertex indices
+		for (uint32 i = 0; i < DecodedMesh.getNoOfIndices() - 2; i += 3)
 		{
-			Tangents.Add(FProcMeshTangent(TangentX, false));
-			Normals.Add(TangentZ);
-		}
-	}
+			// We need to add the vertices of each triangle in reverse or the mesh will be upside down
+			auto Index = DecodedMesh.getIndex(i + 2);
+			auto Vertex2 = DecodedMesh.getVertex(Index);
+			auto TriangleMaterial = Vertex2.data.getMaterial();
 
-	// Finally create the mesh
-	Mesh->CreateMeshSection(0, Vertices, Indices, Normals, UV0, Colors, Tangents, true);
+			float uSize = 16.f;
+
+			// Before we continue, we need to be sure that the triangle is the right material; we don't want to use verticies from other materials
+			if (TriangleMaterial == (Material + 1))
+			{
+				// If it is of the same material, then we need to add the correct indices now
+				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex2.position) * uSize));
+
+				Index = DecodedMesh.getIndex(i + 1);
+				auto Vertex1 = DecodedMesh.getVertex(Index);
+				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex1.position) * uSize));
+
+				Index = DecodedMesh.getIndex(i);
+				auto Vertex0 = DecodedMesh.getVertex(Index);
+				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex0.position) * uSize));
+
+				// Calculate the tangents of our triangle
+				const FVector Edge01 = FPolyVoxVector(Vertex1.position - Vertex0.position);
+				const FVector Edge02 = FPolyVoxVector(Vertex2.position - Vertex0.position);
+
+				const FVector TangentX = Edge01.GetSafeNormal();
+				FVector TangentZ = (Edge01 ^ Edge02).GetSafeNormal();
+
+				for (int32 i = 0; i < 3; i++)
+				{
+					Tangents.Add(FProcMeshTangent(TangentX, false));
+					Normals.Add(TangentZ);
+				}
+			}
+		}
+
+		// Finally create the mesh
+		Mesh->CreateMeshSection(Material, Vertices, Indices, Normals, UV0, Colors, Tangents, true);
+		Mesh->SetMaterial(Material, TerrainMaterials[Material]);
+	}
 }

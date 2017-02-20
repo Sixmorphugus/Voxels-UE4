@@ -43,8 +43,12 @@ public:
 	void UpdateMesh();
 
 	// The procedurally generated mesh that represents our voxels
-	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, VisibleAnywhere)
 	class UProceduralMeshComponent* Mesh;
+
+	// The material to apply to our voxel terrain
+	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
+	TArray<UMaterialInterface*> TerrainMaterials;
 
 private:
 	TSharedPtr<PolyVox::PagedVolume<PolyVox::MaterialDensityPair44>> VoxelVolume;
