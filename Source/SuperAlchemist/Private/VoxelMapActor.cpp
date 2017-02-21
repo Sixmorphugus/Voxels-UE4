@@ -82,7 +82,9 @@ void AVoxelMapActor::UpdateMesh()
 
 	// Extract the voxel mesh from PolyVox
 	PolyVox::Region ToExtract(Vector3DInt32(0, 0, 0), Vector3DInt32(127, 127, 63));
-	auto ExtractedMesh = extractCubicMesh(VoxelVolume.Get(), ToExtract);
+	DefaultIsQuadNeeded<PagedVolume<MaterialDensityPair44>::VoxelType> iqn; // nonsense tbh
+
+	auto ExtractedMesh = extractCubicMesh(VoxelVolume.Get(), ToExtract, iqn, false);
 	auto DecodedMesh = decodeMesh(ExtractedMesh);
 
 	// This isn't the most efficient way to handle this, but it works.
