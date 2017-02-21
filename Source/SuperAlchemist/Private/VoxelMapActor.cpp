@@ -22,7 +22,7 @@ void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialD
 	{
 		for (int y = region.getLowerY(); y <= region.getUpperY(); y++)
 		{
-			int32 towerHeight = 1;
+			int32 towerHeight = (FMath::Rand() % 2) + 1;
 
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				MaterialDensityPair44 Voxel;
@@ -86,8 +86,6 @@ void AVoxelMapActor::UpdateMesh()
 	auto DecodedMesh = decodeMesh(ExtractedMesh);
 
 	// This isn't the most efficient way to handle this, but it works.
-	// To improve the performance of this code, you'll want to modify 
-	// the code so that you only run this section of code once.
 	for (int32 Material = 0; Material < TerrainMaterials.Num(); Material++)
 	{
 		// Define variables to pass into the CreateMeshSection function
@@ -109,8 +107,7 @@ void AVoxelMapActor::UpdateMesh()
 			float uSize = 16.f;
 
 			// Before we continue, we need to be sure that the triangle is the right material; we don't want to use verticies from other materials
-			if (TriangleMaterial == (Material + 1))
-			{
+			if (TriangleMaterial == (Material + 1)) {
 				// If it is of the same material, then we need to add the correct indices now
 				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex2.position) * uSize));
 
@@ -123,19 +120,28 @@ void AVoxelMapActor::UpdateMesh()
 				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex0.position) * uSize));
 
 				// Calculate the tangents of our triangle
-				const FVector Edge01 = FPolyVoxVector(Vertex1.position - Vertex0.position);
-				const FVector Edge02 = FPolyVoxVector(Vertex2.position - Vertex0.position);
+				FVector Edge1 = FPolyVoxVector(Vertex0.position - Vertex1.position);
+				FVector Edge2 = FPolyVoxVector(Vertex1.position - Vertex2.position);
 
-				FVector Normal = (Edge01 ^ Edge02).GetSafeNormal();
-				FVector Tangent = Edge01.GetSafeNormal();
+				FVector Normal = FVector::CrossProduct(Edge1, Edge2);
+				FVector Tangent;
 
-				UE_LOG(LogTemp, Warning, TEXT("%s"),
-					*Tangent.ToString());
+				FVector c1 = FVector::CrossProduct(Normal, FVector(0.0, 0.0, 1.0));
+				FVector c2 = FVector::CrossProduct(Normal, FVector(0.0, 1.0, 0.0));
+
+				if (c1.Size() > c2.Size())
+				{
+					Tangent = c1;
+				}
+				else
+				{
+					Tangent = c2;
+				}
 
 				for (int32 v = 0; v < 3; v++)
 				{
-					Tangents.Add(FProcMeshTangent(Tangent, false));
 					Normals.Add(Normal);
+					Tangents.Add(FProcMeshTangent(Tangent, false));
 				}
 			}
 		}
