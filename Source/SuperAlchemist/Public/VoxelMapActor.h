@@ -2,10 +2,6 @@
 
 #pragma once
 
-// Polyvox Includes
-#include "PolyVox/PagedVolume.h"
-#include "PolyVox/MaterialDensityPair.h"
-
 // Main Includes
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
@@ -13,7 +9,7 @@
 
 #include "VoxelMapActor.generated.h"
 
-class FVoxelMapPager : public PolyVox::PagedVolume<PolyVox::MaterialDensityPair44>::Pager
+class SUPERALCHEMIST_API FVoxelMapPager : public PolyVox::PagedVolume<FVoxel>::Pager
 {
 public:
 	// Constructor
@@ -23,8 +19,8 @@ public:
 	virtual ~FVoxelMapPager() {};
 
 	// PagedVolume::Pager functions
-	virtual void pageIn(const PolyVox::Region& region, PolyVox::PagedVolume<PolyVox::MaterialDensityPair44>::Chunk* pChunk);
-	virtual void pageOut(const PolyVox::Region& region, PolyVox::PagedVolume<PolyVox::MaterialDensityPair44>::Chunk* pChunk);
+	virtual void pageIn(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
+	virtual void pageOut(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
 };
 
 UCLASS()
@@ -51,5 +47,5 @@ public:
 	TArray<UMaterialInterface*> TerrainMaterials;
 
 private:
-	TSharedPtr<PolyVox::PagedVolume<PolyVox::MaterialDensityPair44>> VoxelVolume;
+	TSharedPtr<FVoxelVolume> VoxelVolume;
 };

@@ -4,18 +4,16 @@
 #include "VoxelMapActor.h"
 
 #include "PolyVox/CubicSurfaceExtractor.h"
-#include "PolyVox/Mesh.h"
-using namespace PolyVox;
 
 FVoxelMapPager::FVoxelMapPager()
-	: PagedVolume<MaterialDensityPair44>::Pager()
+	: FVoxelVolume::Pager()
 {
 
 }
 
 // Called when a new chunk is paged in
 // This function will automatically generate our voxel-based terrain
-void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialDensityPair44>::Chunk* Chunk)
+void FVoxelMapPager::pageIn(const FVoxelRegion& region, FVoxelVolume::Chunk* Chunk)
 {
 	// Now that we have our noise setup, let's loop over our chunk and apply it.
 	for (int x = region.getLowerX(); x <= region.getUpperX(); x++)
@@ -25,7 +23,7 @@ void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialD
 			int32 towerHeight = (FMath::Rand() % 2) + 1;
 
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
-				MaterialDensityPair44 Voxel;
+				FVoxel Voxel;
 
 				bool bSolid = (z < towerHeight);
 
@@ -53,7 +51,7 @@ void FVoxelMapPager::pageIn(const PolyVox::Region& region, PagedVolume<MaterialD
 }
 
 // Called when a chunk is paged out
-void FVoxelMapPager::pageOut(const PolyVox::Region& region, PagedVolume<MaterialDensityPair44>::Chunk* Chunk)
+void FVoxelMapPager::pageOut(const FVoxelRegion& region, FVoxelVolume::Chunk* Chunk)
 {
 
 }
@@ -68,7 +66,7 @@ AVoxelMapActor::AVoxelMapActor()
 void AVoxelMapActor::PostInitializeComponents()
 {
 	// Initialize our paged volume.
-	VoxelVolume = MakeShareable(new PagedVolume<MaterialDensityPair44>(new FVoxelMapPager()));
+	VoxelVolume = MakeShareable(new FVoxelVolume(new FVoxelMapPager()));
 
 	// Call the base class's function.
 	Super::PostInitializeComponents();
@@ -81,11 +79,11 @@ void AVoxelMapActor::UpdateMesh()
 	Mesh->ClearAllMeshSections();
 
 	// Extract the voxel mesh from PolyVox
-	PolyVox::Region ToExtract(Vector3DInt32(0, 0, 0), Vector3DInt32(127, 127, 63));
-	DefaultIsQuadNeeded<PagedVolume<MaterialDensityPair44>::VoxelType> iqn; // nonsense tbh
+	FVoxelRegion ToExtract(FVoxIntVector(0, 0, 0).convert(), FVoxIntVector(127, 127, 63).convert());
+	FIsVoxelQuadNeeded iqn; // nonsense tbh
 
-	auto ExtractedMesh = extractCubicMesh(VoxelVolume.Get(), ToExtract, iqn, false);
-	auto DecodedMesh = decodeMesh(ExtractedMesh);
+	auto ExtractedMesh = PolyVox::extractCubicMesh(VoxelVolume.Get(), ToExtract, iqn, false);
+	auto DecodedMesh = PolyVox::decodeMesh(ExtractedMesh);
 
 	// This isn't the most efficient way to handle this, but it works.
 	for (int32 Material = 0; Material < TerrainMaterials.Num(); Material++)
@@ -111,19 +109,19 @@ void AVoxelMapActor::UpdateMesh()
 			// Before we continue, we need to be sure that the triangle is the right material; we don't want to use verticies from other materials
 			if (TriangleMaterial == (Material + 1)) {
 				// If it is of the same material, then we need to add the correct indices now
-				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex2.position) * uSize));
+				Indices.Add(Vertices.Add(FVoxVector(Vertex2.position) * uSize));
 
 				Index = DecodedMesh.getIndex(i + 1);
 				auto Vertex1 = DecodedMesh.getVertex(Index);
-				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex1.position) * uSize));
+				Indices.Add(Vertices.Add(FVoxVector(Vertex1.position) * uSize));
 
 				Index = DecodedMesh.getIndex(i);
 				auto Vertex0 = DecodedMesh.getVertex(Index);
-				Indices.Add(Vertices.Add(FPolyVoxVector(Vertex0.position) * uSize));
+				Indices.Add(Vertices.Add(FVoxVector(Vertex0.position) * uSize));
 
 				// Calculate the tangents of our triangle
-				FVector Edge1 = FPolyVoxVector(Vertex0.position - Vertex1.position);
-				FVector Edge2 = FPolyVoxVector(Vertex1.position - Vertex2.position);
+				FVector Edge1 = FVoxVector(Vertex0.position - Vertex1.position);
+				FVector Edge2 = FVoxVector(Vertex1.position - Vertex2.position);
 
 				FVector Normal = FVector::CrossProduct(Edge1, Edge2);
 				FVector Tangent;
