@@ -18,7 +18,7 @@ public:
 	// Destructor
 	virtual ~FVoxelMapPager() {};
 
-	// PagedVolume::Pager functions
+	// PagedVolume::Pager functions - used to translate (or generate) voxels to give to polyvox and save them respectively
 	virtual void pageIn(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
 	virtual void pageOut(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
 };
