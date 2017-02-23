@@ -4,24 +4,9 @@
 
 // Main Includes
 #include "GameFramework/Actor.h"
-#include "ProceduralMeshComponent.h"
-#include "PolyVoxBridge.h"
+#include "VoxelMap.h"
 
 #include "VoxelMapActor.generated.h"
-
-class SUPERALCHEMIST_API FVoxelMapPager : public PolyVox::PagedVolume<FVoxel>::Pager
-{
-public:
-	// Constructor
-	FVoxelMapPager();
-
-	// Destructor
-	virtual ~FVoxelMapPager() {};
-
-	// PagedVolume::Pager functions - used to translate (or generate) voxels to give to polyvox and save them respectively
-	virtual void pageIn(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
-	virtual void pageOut(const PolyVox::Region& region, PolyVox::PagedVolume<FVoxel>::Chunk* pChunk);
-};
 
 UCLASS()
 class SUPERALCHEMIST_API AVoxelMapActor : public AActor
@@ -33,19 +18,13 @@ public:
 	AVoxelMapActor();
 
 	// Called after the C++ constructor and after the properties have been initialized.
-	virtual void PostInitializeComponents() override;
-
-	// Called when the actor has begun playing in the level
-	void UpdateMesh();
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e);
 
 	// The procedurally generated mesh that represents our voxels
-	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(Category = "Voxels", BlueprintReadWrite, VisibleAnywhere)
 	class UProceduralMeshComponent* Mesh;
 
-	// The material to apply to our voxel terrain
-	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
-	TArray<UMaterialInterface*> TerrainMaterials;
-
-private:
-	TSharedPtr<FVoxelVolume> VoxelVolume;
+	// The procedurally generated mesh that represents our voxels
+	UPROPERTY(Category = "Voxels", BlueprintReadWrite, EditAnywhere)
+	UVoxelMap* MapAsset;
 };
