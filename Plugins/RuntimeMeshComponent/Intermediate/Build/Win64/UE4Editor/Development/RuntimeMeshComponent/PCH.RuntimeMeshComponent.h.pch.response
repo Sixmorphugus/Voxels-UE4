@@ -23,11 +23,11 @@
 /wd4838
 /w44668
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source"
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent\Private
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Source
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent\Public
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Inc\RuntimeMeshComponent
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent\Private
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Source
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent\Public
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Inc\RuntimeMeshComponent
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Source\RuntimeMeshComponent
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Runtime\Core\Public"
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Runtime\Core\Public\Internationalization"
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Runtime\Core\Public\Async"
@@ -305,11 +305,11 @@
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Editor\Kismet"
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Runtime\NetworkReplayStreaming\NetworkReplayStreaming\Public"
 /I "D:\More Program Files\Epic Games\UE_4.15\Engine\Source\Runtime\NetworkReplayStreaming\NetworkReplayStreaming"
-/I D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent
-/Yc"D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h"
-/Fp"D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h.pch"
-"D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.cpp"
-/Fo"D:\Repos\BrickWorld\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h.obj"
+/I D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent
+/Yc"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h"
+/Fp"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h.pch"
+"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.cpp"
+/Fo"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4Editor\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h.obj"
 /TP
 /GR-
 /W4

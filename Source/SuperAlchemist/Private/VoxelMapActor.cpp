@@ -3,15 +3,34 @@
 #include "SuperAlchemist.h"
 #include "VoxelMapActor.h"
 
-AVoxelMapActor::AVoxelMapActor()
+AVoxelMapActor::AVoxelMapActor(const FObjectInitializer& ObjectInitializer)
 {
 	// Initialize our mesh component
-	Mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Map Mesh"));
+	Mesh = CreateDefaultSubobject<URuntimeMeshComponent>(TEXT("Map Mesh"));
 }
 
-void AVoxelMapActor::PostEditChangeProperty(struct FPropertyChangedEvent& e)
+void AVoxelMapActor::PostInitializeComponents()
 {
-	if(e.Property->GetFName() == GET_MEMBER_NAME_CHECKED(AVoxelMapActor, MapAsset))
-		if (MapAsset)
-			MapAsset->BakeMesh(Mesh);
+	Super::PostInitializeComponents();
+	GetMeshFromMapAsset();
+}
+
+void AVoxelMapActor::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	GetMeshFromMapAsset();
+}
+
+void AVoxelMapActor::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	GetMeshFromMapAsset();
+}
+
+void AVoxelMapActor::GetMeshFromMapAsset()
+{
+	if (MapAsset)
+		MapAsset->GetMesh(Mesh);
+	else
+		Mesh->ClearAllMeshSections();
 }

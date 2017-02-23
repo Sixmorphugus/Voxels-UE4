@@ -65,7 +65,7 @@ UVoxelMap::UVoxelMap(const FObjectInitializer& ObjectInitializer)
 	VoxelVolume = MakeShareable(new FVoxelVolume(new FVoxelMapPager()));
 }
 
-void UVoxelMap::BakeMesh(UProceduralMeshComponent* Mesh)
+void UVoxelMap::GetMesh(URuntimeMeshComponent* Mesh)
 {
 	if (!Mesh)
 		return;
@@ -88,7 +88,7 @@ void UVoxelMap::BakeMesh(UProceduralMeshComponent* Mesh)
 		auto Normals = TArray<FVector>();
 		auto UV0 = TArray<FVector2D>();
 		auto Colors = TArray<FColor>();
-		auto Tangents = TArray<FProcMeshTangent>();
+		auto Tangents = TArray<FRuntimeMeshTangent>();
 
 		// Loop over all of the triangle vertex indices
 		for (uint32 i = 0; i < DecodedMesh.getNoOfIndices() - 2; i += 3)
@@ -135,7 +135,7 @@ void UVoxelMap::BakeMesh(UProceduralMeshComponent* Mesh)
 				for (int32 v = 0; v < 3; v++)
 				{
 					Normals.Add(Normal);
-					Tangents.Add(FProcMeshTangent(Tangent, false));
+					Tangents.Add(FRuntimeMeshTangent(Tangent, false));
 				}
 			}
 		}

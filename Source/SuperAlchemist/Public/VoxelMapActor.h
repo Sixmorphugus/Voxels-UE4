@@ -15,14 +15,16 @@ class SUPERALCHEMIST_API AVoxelMapActor : public AActor
 
 public:
 	// Sets default values for this actor's properties
-	AVoxelMapActor();
+	AVoxelMapActor(const FObjectInitializer& ObjectInitializer);
 
-	// Called after the C++ constructor and after the properties have been initialized.
-	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e);
+	virtual void PostInitializeComponents();
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
+	virtual void OnConstruction(const FTransform& Transform);
+	void GetMeshFromMapAsset();
 
 	// The procedurally generated mesh that represents our voxels
 	UPROPERTY(Category = "Voxels", BlueprintReadWrite, VisibleAnywhere)
-	class UProceduralMeshComponent* Mesh;
+	class URuntimeMeshComponent* Mesh;
 
 	// The procedurally generated mesh that represents our voxels
 	UPROPERTY(Category = "Voxels", BlueprintReadWrite, EditAnywhere)

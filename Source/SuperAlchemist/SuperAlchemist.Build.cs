@@ -13,7 +13,7 @@ public class SuperAlchemist : ModuleRules
 	
 	public SuperAlchemist(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ProceduralMeshComponent" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RuntimeMeshComponent" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

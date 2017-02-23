@@ -4,7 +4,7 @@
 
 #include "UObject/NoExportTypes.h"
 #include "PolyVoxBridge.h"
-#include "ProceduralMeshComponent.h"
+#include "RuntimeMeshComponent.h"
 
 #include "VoxelMap.generated.h"
 
@@ -31,7 +31,7 @@ class SUPERALCHEMIST_API UVoxelMap : public UObject
 public:
 	GENERATED_UCLASS_BODY()
 
-	void BakeMesh(UProceduralMeshComponent* Mesh);
+	void GetMesh(URuntimeMeshComponent* Mesh);
 
 	// The materials to apply to our voxel terrain
 	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
