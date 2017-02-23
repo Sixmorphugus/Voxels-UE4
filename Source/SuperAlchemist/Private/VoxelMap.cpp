@@ -22,6 +22,9 @@ void FVoxelMapPager::pageIn(const FVoxelRegion& region, FVoxelVolume::Chunk* Chu
 		{
 			int32 towerHeight = (FMath::Rand() % 2) + 1;
 
+			if (towerHeight == 2)
+				towerHeight++;
+
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				FVoxel Voxel;
 
@@ -29,8 +32,7 @@ void FVoxelMapPager::pageIn(const FVoxelRegion& region, FVoxelVolume::Chunk* Chu
 
 				int32 zMat = z + 1;
 
-				if (zMat > towerHeight)
-					zMat = towerHeight;
+				zMat = (towerHeight > 1) + 1;
 
 				if (bSolid) {
 					Voxel.setDensity(255);
