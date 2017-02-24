@@ -33,6 +33,9 @@ public:
 
 	void GetMesh(URuntimeMeshComponent* Mesh);
 
+	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
+	float VoxelScale = 16.f;
+
 	// The materials to apply to our voxel terrain
 	UPROPERTY(Category = "Voxel Terrain", BlueprintReadWrite, EditAnywhere)
 	TArray<UMaterialInterface*> TerrainMaterials;

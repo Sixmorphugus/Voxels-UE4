@@ -20,10 +20,10 @@ void FVoxelMapPager::pageIn(const FVoxelRegion& region, FVoxelVolume::Chunk* Chu
 	{
 		for (int y = region.getLowerY(); y <= region.getUpperY(); y++)
 		{
-			int32 towerHeight = (FMath::Rand() % 2) + 1;
+			int32 towerHeight = (FMath::Rand() % 3) + 1;
 
-			if (towerHeight == 2)
-				towerHeight++;
+			if (towerHeight < 3)
+				towerHeight = 1;
 
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				FVoxel Voxel;
@@ -99,8 +99,9 @@ void UVoxelMap::GetMesh(URuntimeMeshComponent* Mesh)
 			auto Index = DecodedMesh.getIndex(i + 2);
 			auto Vertex2 = DecodedMesh.getVertex(Index);
 			auto TriangleMaterial = Vertex2.data.getMaterial();
+			auto Color = Vertex2.data.getColor();
 
-			float uSize = 16.f;
+			float uSize = VoxelScale;
 
 			// Before we continue, we need to be sure that the triangle is the right material; we don't want to use verticies from other materials
 			if (TriangleMaterial == (Material + 1)) {
@@ -138,6 +139,7 @@ void UVoxelMap::GetMesh(URuntimeMeshComponent* Mesh)
 				{
 					Normals.Add(Normal);
 					Tangents.Add(FRuntimeMeshTangent(Tangent, false));
+					Colors.Add(Color);
 				}
 			}
 		}

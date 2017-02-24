@@ -6,10 +6,12 @@
 #include "PolyVox/Vector.h"
 #include "PolyVox/Mesh.h"
 
-typedef PolyVox::MaterialDensityPair44 FVoxel;
+#include "Voxel.h"
+
+//typedef PolyVox::MaterialDensityPair44 FVoxel;
 typedef PolyVox::PagedVolume<FVoxel> FVoxelVolume;
 typedef PolyVox::Region FVoxelRegion;
-typedef PolyVox::DefaultIsQuadNeeded<FVoxel> FIsVoxelQuadNeeded;
+typedef PolyVox::DefaultIsQuadNeeded<PolyVox::MaterialDensityPair44> FIsVoxelQuadNeeded;
 
 // Bridge between PolyVox Vector3DFloat and Unreal Engine 4 FVector
 struct FVoxVector : public FVector
