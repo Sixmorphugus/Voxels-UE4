@@ -19,6 +19,20 @@ public class SuperAlchemistEditor : ModuleRules
 			"MeshPaint",
 			"EditorWidgets"
 		});
-		
-	}
+
+        PrivateIncludePathModuleNames.AddRange(
+            new string[] {
+                "Settings",
+                "AssetTools",
+                "LevelEditor"
+            }
+        );
+
+        DynamicallyLoadedModuleNames.AddRange(
+            new string[] {
+                "AssetTools"
+            }
+        );
+
+    }
 }
