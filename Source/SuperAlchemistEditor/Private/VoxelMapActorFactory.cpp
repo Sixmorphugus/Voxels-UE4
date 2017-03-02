@@ -4,6 +4,8 @@
 #include "VoxelMapActorFactory.h"
 #include "AssetData.h"
 #include "VoxelMapActor.h"
+#include "VoxelMapComponent.h"
+#include "VoxelMap.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UVoxelMapActorFactory
@@ -22,7 +24,7 @@ void UVoxelMapActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 	if (UVoxelMap* VM = Cast<UVoxelMap>(Asset))
 	{
 		AVoxelMapActor* TypedActor = CastChecked<AVoxelMapActor>(NewActor);
-		TypedActor->MapAsset = VM;
+		TypedActor->Map->SetVoxelMap(VM);
 	}
 }
 

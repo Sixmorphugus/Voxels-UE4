@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-/*
 #include "CoreMinimal.h"
 #include "UObject/GCObject.h"
 #include "Toolkits/IToolkitHost.h"
@@ -9,6 +8,7 @@
 
 class FToolBarBuilder;
 class UVoxelMap;
+class SVoxelMapEditorViewport;
 
 //////////////////////////////////////////////////////////////////////////
 // 
@@ -17,9 +17,9 @@ namespace EVoxelMapEditorMode
 {
 	enum Type
 	{
+		ViewMode,
 		PlaceMode,
-		ColorMode,
-		MaterialMode
+		EditMode
 	};
 }
 
@@ -51,19 +51,15 @@ public:
 	// FSerializableObject interface
 	virtual void AddReferencedObjects(FReferenceCollector& Collector) override;
 	// End of FSerializableObject interface
-
-	// Get the source texture for the current voxel map being edited
-	UTexture2D* GetSourceTexture() const;
 public:
 	void InitVoxelMapEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UVoxelMap* InitVoxelMap);
 
 	UVoxelMap* GetVoxelMapBeingEdited() const { return VoxelMapBeingEdited; }
 	void SetVoxelMapBeingEdited(UVoxelMap* NewVoxelMap);
 
-	EVoxelMapEditorMode::Type GetCurrentMode() const;
-
 protected:
 	UVoxelMap* VoxelMapBeingEdited;
+	TSharedPtr<SVoxelMapEditorViewport> ViewportPtr;
 
 protected:
 	void BindCommands();
@@ -72,10 +68,7 @@ protected:
 
 	TSharedRef<SDockTab> SpawnTab_Viewport(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTab_Details(const FSpawnTabArgs& Args);
-	TSharedRef<SDockTab> SpawnTab_MaterialsList(const FSpawnTabArgs& Args);
+	//TSharedRef<SDockTab> SpawnTab_VoxelMapList(const FSpawnTabArgs& Args);
 
 	void CreateModeToolbarWidgets(FToolBarBuilder& ToolbarBuilder);
-
-	FText GetCurrentModeCornerText() const;
 };
-*/

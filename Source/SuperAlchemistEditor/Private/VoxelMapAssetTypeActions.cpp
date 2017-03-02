@@ -28,7 +28,6 @@ UClass * FVoxelMapAssetTypeActions::GetSupportedClass() const
 
 void FVoxelMapAssetTypeActions::OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor /*= TSharedPtr<IToolkitHost>()*/)
 {
-	/*
 	const EToolkitMode::Type Mode = EditWithinLevelEditor.IsValid() ? EToolkitMode::WorldCentric : EToolkitMode::Standalone;
 
 	for (auto ObjIt = InObjects.CreateConstIterator(); ObjIt; ++ObjIt)
@@ -39,7 +38,6 @@ void FVoxelMapAssetTypeActions::OpenAssetEditor(const TArray<UObject*>& InObject
 			NewEditor->InitVoxelMapEditor(Mode, EditWithinLevelEditor, Map);
 		}
 	}
-	*/
 }
 
 uint32 FVoxelMapAssetTypeActions::GetCategories()

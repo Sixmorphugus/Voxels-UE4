@@ -17,8 +17,9 @@ public class SuperAlchemistEditor : ModuleRules
 			"WorkspaceMenuStructure",
 			"EditorStyle",
 			"MeshPaint",
-			"EditorWidgets"
-		});
+			"EditorWidgets",
+            "KismetWidgets"
+        });
 
         PrivateIncludePathModuleNames.AddRange(
             new string[] {
