@@ -15,7 +15,7 @@ FSuperAlchemistEditor::FSuperAlchemistEditor()
 void FSuperAlchemistEditor::StartupModule()
 {
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-	VoxelMapAssetCategoryBit = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("Paper2D")), LOCTEXT("SuperAlchemistAssetCategory", "SuperAlchemist"));
+	VoxelMapAssetCategoryBit = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("SuperAlchemist")), LOCTEXT("SuperAlchemistAssetCategory", "SuperAlchemist"));
 
 	RegisterAssetTypeAction(AssetTools, MakeShareable(new FVoxelMapAssetTypeActions(VoxelMapAssetCategoryBit)));
 }
