@@ -8,4 +8,5 @@ AVoxelMapActor::AVoxelMapActor(const FObjectInitializer& ObjectInitializer)
 {
 	// Initialize our mesh component
 	Map = CreateDefaultSubobject<UVoxelMapComponent>(TEXT("Map"));
+	RootComponent = Map;
 }

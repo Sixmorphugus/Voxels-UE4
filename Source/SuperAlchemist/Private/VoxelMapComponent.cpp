@@ -10,6 +10,7 @@ UVoxelMapComponent::UVoxelMapComponent(const FObjectInitializer& ObjectInitializ
 	: USceneComponent(ObjectInitializer)
 {
 	Mesh = CreateDefaultSubobject<URuntimeMeshComponent>(TEXT("Mesh"));
+	Mesh->bShouldSerializeMeshData = false;
 }
 
 void UVoxelMapComponent::PostEditChangeProperty(struct FPropertyChangedEvent& e)
