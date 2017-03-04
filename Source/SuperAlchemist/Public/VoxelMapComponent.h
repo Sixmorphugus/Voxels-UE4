@@ -18,7 +18,8 @@ public:
 
 	// Functions
 private:
-	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e);
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;
+	virtual void PostLoad() override;
 
 public:
 	void UpdateMesh();

@@ -11,11 +11,20 @@ UVoxelMapComponent::UVoxelMapComponent(const FObjectInitializer& ObjectInitializ
 {
 	Mesh = CreateDefaultSubobject<URuntimeMeshComponent>(TEXT("Mesh"));
 	Mesh->bShouldSerializeMeshData = false;
+	Mesh->SetRelativeLocation(FVector(ForceInitToZero), false);
+
+	bWantsInitializeComponent = true;
 }
 
 void UVoxelMapComponent::PostEditChangeProperty(struct FPropertyChangedEvent& e)
 {
 	Super::PostEditChangeProperty(e);
+	UpdateMesh();
+}
+
+void UVoxelMapComponent::PostLoad()
+{
+	Super::PostLoad();
 	UpdateMesh();
 }
 
