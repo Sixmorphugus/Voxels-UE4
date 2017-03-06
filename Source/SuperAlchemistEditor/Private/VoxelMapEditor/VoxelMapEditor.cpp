@@ -104,11 +104,13 @@ void SVoxelMapEditorViewport::BindCommands()
 		FIsActionChecked::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsShowVoxelMapNamesChecked),
 		FIsActionButtonVisible::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsInEditMode));
 
+	/*
 	CommandList->MapAction(
 		Commands.SetShowMeshEdges,
 		FExecuteAction::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::ToggleShowMeshEdges),
 		FCanExecuteAction(),
 		FIsActionChecked::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsShowMeshEdgesChecked));
+		*/
 
 	// Editing modes
 	CommandList->MapAction(
@@ -262,7 +264,7 @@ FText FVoxelMapEditor::GetToolkitName() const
 	FFormatNamedArguments Args;
 	Args.Add(TEXT("VoxelMapName"), FText::FromString(VoxelMapBeingEdited->GetName()));
 	Args.Add(TEXT("DirtyState"), bDirtyState ? FText::FromString(TEXT("*")) : FText::GetEmpty());
-	return FText::Format(LOCTEXT("SpriteEditorToolkitName", "{SpriteName}{DirtyState}"), Args);
+	return FText::Format(LOCTEXT("SpriteEditorToolkitName", "{VoxelMapName}{DirtyState}"), Args);
 }
 
 FText FVoxelMapEditor::GetToolkitToolTipText() const
@@ -272,7 +274,7 @@ FText FVoxelMapEditor::GetToolkitToolTipText() const
 
 FString FVoxelMapEditor::GetWorldCentricTabPrefix() const
 {
-	return TEXT("SpriteEditor");
+	return TEXT("VoxelMapEditor");
 }
 
 FString FVoxelMapEditor::GetDocumentationLink() const
@@ -373,6 +375,9 @@ void FVoxelMapEditor::CreateModeToolbarWidgets(FToolBarBuilder& IgnoredBuilder)
 
 void FVoxelMapEditor::InitVoxelMapEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, class UVoxelMap* InitVM)
 {
+	if (!InitVM)
+		UE_LOG(LogTemp, Warning, TEXT("No map to edit!"));
+
 	VoxelMapBeingEdited = InitVM;
 
 	BindCommands();

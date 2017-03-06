@@ -4,6 +4,7 @@
 
 #include "AssetToolsModule.h"
 #include "VoxelMapAssetTypeActions.h"
+#include "VoxelMapEditor/VoxelMapEditorCommands.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE(FSuperAlchemistEditor, SuperAlchemistEditor, "SuperAlchemistEditor" );
 
@@ -14,6 +15,8 @@ FSuperAlchemistEditor::FSuperAlchemistEditor()
 
 void FSuperAlchemistEditor::StartupModule()
 {
+	FVoxelMapEditorCommands::Register(); // we need to register these commands
+
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 	VoxelMapAssetCategoryBit = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("SuperAlchemist")), LOCTEXT("SuperAlchemistAssetCategory", "SuperAlchemist"));
 

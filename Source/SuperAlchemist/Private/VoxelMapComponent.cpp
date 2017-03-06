@@ -11,7 +11,8 @@ UVoxelMapComponent::UVoxelMapComponent(const FObjectInitializer& ObjectInitializ
 {
 	Mesh = CreateDefaultSubobject<URuntimeMeshComponent>(TEXT("Mesh"));
 	Mesh->bShouldSerializeMeshData = false;
-	Mesh->SetRelativeLocation(FVector(ForceInitToZero), false);
+	Mesh->bEditableWhenInherited = false;
+	Mesh->SetRelativeLocation(FVector(0, 0, 0), false);
 
 	bWantsInitializeComponent = true;
 }

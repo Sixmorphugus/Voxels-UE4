@@ -275,7 +275,7 @@ void FVoxelMapEditorViewportClient::TrackingStopped()
 
 FLinearColor FVoxelMapEditorViewportClient::GetBackgroundColor() const
 {
-	return FColor::Black; //GetDefault<UVoxelMapEditorSettings>()->BackgroundColor;
+	return FColor(150, 150, 150); //GetDefault<UVoxelMapEditorSettings>()->BackgroundColor;
 }
 
 void FVoxelMapEditorViewportClient::InvalidateViewportAndHitProxies()
