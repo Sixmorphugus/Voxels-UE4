@@ -19,6 +19,8 @@
 
 #include "Widgets/Docking/SDockTab.h"
 
+#include "IDetailsView.h"
+
 #define LOCTEXT_NAMESPACE "VoxelMapEditor"
 
 namespace FVoxelMapEditorTabs
@@ -104,13 +106,11 @@ void SVoxelMapEditorViewport::BindCommands()
 		FIsActionChecked::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsShowVoxelMapNamesChecked),
 		FIsActionButtonVisible::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsInEditMode));
 
-	/*
 	CommandList->MapAction(
 		Commands.SetShowMeshEdges,
 		FExecuteAction::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::ToggleShowMeshEdges),
 		FCanExecuteAction(),
 		FIsActionChecked::CreateSP(EditorViewportClientRef, &FVoxelMapEditorViewportClient::IsShowMeshEdgesChecked));
-		*/
 
 	// Editing modes
 	CommandList->MapAction(
@@ -168,6 +168,47 @@ void SVoxelMapEditorViewport::OnFloatingButtonClicked()
 }
 
 /////////////////////////////////////////////////////
+// SVoxelMapPropertiesTabBody
+
+class SVoxelMapPropertiesTabBody : public SSingleObjectDetailsPanel
+{
+public:
+	SLATE_BEGIN_ARGS(SVoxelMapPropertiesTabBody) {}
+	SLATE_END_ARGS()
+
+private:
+	// Pointer back to owning VoxelMap editor instance (the keeper of state)
+	TWeakPtr<class FVoxelMapEditor> VoxelMapEditorPtr;
+public:
+	void Construct(const FArguments& InArgs, TSharedPtr<FVoxelMapEditor> InVoxelMapEditor)
+	{
+		VoxelMapEditorPtr = InVoxelMapEditor;
+
+		SSingleObjectDetailsPanel::Construct(SSingleObjectDetailsPanel::FArguments().HostCommandList(InVoxelMapEditor->GetToolkitCommands()).HostTabManager(InVoxelMapEditor->GetTabManager()), /*bAutomaticallyObserveViaGetObjectToObserve=*/ true, /*bAllowSearch=*/ true);
+
+		TAttribute<EVoxelMapEditorMode::Type> VoxelMapEditorMode = TAttribute<EVoxelMapEditorMode::Type>::Create(
+			TAttribute<EVoxelMapEditorMode::Type>::FGetter::CreateSP(InVoxelMapEditor.ToSharedRef(), &FVoxelMapEditor::GetMode));
+	}
+
+	// SSingleObjectDetailsPanel interface
+	virtual UObject* GetObjectToObserve() const override
+	{
+		return VoxelMapEditorPtr.Pin()->GetVoxelMapBeingEdited();
+	}
+
+	virtual TSharedRef<SWidget> PopulateSlot(TSharedRef<SWidget> PropertyEditorWidget) override
+	{
+		return SNew(SVerticalBox)
+			+ SVerticalBox::Slot()
+			.FillHeight(1)
+			[
+				PropertyEditorWidget
+			];
+	}
+	// End of SSingleObjectDetailsPanel interface
+};
+
+/////////////////////////////////////////////////////
 
 FVoxelMapEditor::FVoxelMapEditor()
 	: VoxelMapBeingEdited(nullptr)
@@ -197,7 +238,7 @@ TSharedRef<SDockTab> FVoxelMapEditor::SpawnTab_Details(const FSpawnTabArgs& Args
 	return SNew(SDockTab)
 		.Label(LOCTEXT("DetailsTab_Title", "Details"))
 		[
-			SNew(SSingleObjectDetailsPanel, true)
+			SNew(SVoxelMapPropertiesTabBody, VMEditorPtr)
 		];
 }
 
@@ -366,6 +407,11 @@ void FVoxelMapEditor::SetVoxelMapBeingEdited(UVoxelMap* NewVM)
 		RemoveEditingObject(OldMap);
 		AddEditingObject(NewVM);
 	}
+}
+
+EVoxelMapEditorMode::Type FVoxelMapEditor::GetMode()
+{
+	return ViewportPtr->GetCurrentMode();
 }
 
 void FVoxelMapEditor::CreateModeToolbarWidgets(FToolBarBuilder& IgnoredBuilder)

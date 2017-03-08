@@ -57,6 +57,8 @@ public:
 	UVoxelMap* GetVoxelMapBeingEdited() const { return VoxelMapBeingEdited; }
 	void SetVoxelMapBeingEdited(UVoxelMap* NewVoxelMap);
 
+	EVoxelMapEditorMode::Type GetMode();
+
 protected:
 	UVoxelMap* VoxelMapBeingEdited;
 	TSharedPtr<SVoxelMapEditorViewport> ViewportPtr;

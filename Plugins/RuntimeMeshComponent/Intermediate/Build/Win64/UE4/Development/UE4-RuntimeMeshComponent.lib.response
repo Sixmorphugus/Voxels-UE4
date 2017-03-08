@@ -1,0 +1,8 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4\Development\RuntimeMeshComponent\PCH.RuntimeMeshComponent.h.obj"
+"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4\Development\RuntimeMeshComponent\Module.RuntimeMeshComponent.cpp.obj"
+"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Intermediate\Build\Win64\UE4\Development\RuntimeMeshComponent\RuntimeMeshComponent.generated.cpp.obj"
+/OUT:"D:\Repos\SuperAlchemist\Plugins\RuntimeMeshComponent\Binaries\Win64\UE4-RuntimeMeshComponent.lib"

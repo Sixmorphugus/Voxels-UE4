@@ -55,13 +55,11 @@ FVoxelMapEditorViewportClient::FVoxelMapEditorViewportClient(TWeakPtr<FVoxelMapE
 
 	DrawHelper.bDrawGrid = true; //GetDefault<UVoxelMapEditorSettings>()->bShowGridByDefault;
 
-	EngineShowFlags.DisableAdvancedFeatures();
-	EngineShowFlags.SetCompositeEditorPrimitives(true);
-
 	// Create a render component for the VoxelMap being edited
 	{
 		RenderVoxelMapComponent = NewObject<UVoxelMapComponent>();
 		UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
+
 		RenderVoxelMapComponent->SetVoxelMap(VoxelMap);
 
 		PreviewScene->AddComponent(RenderVoxelMapComponent, FTransform::Identity);
@@ -84,8 +82,6 @@ void FVoxelMapEditorViewportClient::DrawCanvas(FViewport& InViewport, FSceneView
 	UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
 
 	int32 YPos = 42;
-
-	static const FText SourceRegionHelpStr = LOCTEXT("SourceRegionHelp", "Drag handles to adjust source region\nDouble-click on an image region to select all connected pixels (Ctrl creates a new VoxelMap)\nHold down Ctrl and drag a rectangle to create a new VoxelMap at that position\nClick on other VoxelMap rectangles to change the active VoxelMap");
 
 	switch (CurrentMode)
 	{
