@@ -31,10 +31,14 @@ void UVoxelMapComponent::PostLoad()
 
 void UVoxelMapComponent::UpdateMesh()
 {
-	if (MapAsset)
+	if (MapAsset) {
+		UE_LOG(LogTemp, Warning, TEXT("Generated mesh"));
 		MapAsset->GetMesh(Mesh);
-	else
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Cleared mesh"));
 		Mesh->ClearAllMeshSections();
+	}
 }
 
 void UVoxelMapComponent::SetVoxelMap(UVoxelMap* Map)

@@ -56,14 +56,14 @@ FVoxelMapEditorViewportClient::FVoxelMapEditorViewportClient(TWeakPtr<FVoxelMapE
 	DrawHelper.bDrawGrid = true; //GetDefault<UVoxelMapEditorSettings>()->bShowGridByDefault;
 
 	// Create a render component for the VoxelMap being edited
-	{
-		RenderVoxelMapComponent = NewObject<UVoxelMapComponent>();
-		UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
+	RenderVoxelMapComponent = NewObject<UVoxelMapComponent>();
+	UBoxComponent* Box = NewObject<UBoxComponent>();
+	UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
 
-		RenderVoxelMapComponent->SetVoxelMap(VoxelMap);
+	PreviewScene->AddComponent(RenderVoxelMapComponent, FTransform::Identity);
+	PreviewScene->AddComponent(Box, FTransform::Identity);
 
-		PreviewScene->AddComponent(RenderVoxelMapComponent, FTransform::Identity);
-	}
+	RenderVoxelMapComponent->SetVoxelMap(VoxelMap);
 }
 
 void FVoxelMapEditorViewportClient::DrawCanvas(FViewport& InViewport, FSceneView& View, FCanvas& Canvas)
@@ -182,7 +182,7 @@ void FVoxelMapEditorViewportClient::Tick(float DeltaSeconds)
 {
 	if (UVoxelMap* VoxelMap = GetVoxelMapBeingEdited())
 	{
-		// ...
+
 	}
 
 	FEditorViewportClient::Tick(DeltaSeconds);
