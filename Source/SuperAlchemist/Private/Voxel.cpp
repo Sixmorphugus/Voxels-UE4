@@ -6,6 +6,7 @@
 FVoxel::FVoxel()
 	: PolyVox::MaterialDensityPair44()
 {
+	color = FColor::White;
 }
 
 FVoxel::FVoxel(uint8_t materialId, uint8_t density, const FColor& col)

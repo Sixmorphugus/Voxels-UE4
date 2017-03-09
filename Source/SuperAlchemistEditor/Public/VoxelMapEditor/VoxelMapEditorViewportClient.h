@@ -9,7 +9,6 @@
 #include "VoxelMapEditor/VoxelMapEditor.h"
 #include "SEditorViewport.h"
 #include "EditorViewportClient.h"
-#include "VoxelMapComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // FRelatedVoxelMap
@@ -83,7 +82,7 @@ private:
 	TWeakPtr<FVoxelMapEditor> VoxelMapEditorPtr;
 
 	// Render component for the VoxelMap being edited
-	UVoxelMapComponent* RenderVoxelMapComponent;
+	class AVoxelMapActor* RenderVoxelMap;
 
 	// Widget mode
 	// 	FWidget::EWidgetMode DesiredWidgetMode;

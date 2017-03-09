@@ -25,6 +25,9 @@
 #include "VoxelMap.h"
 #include "VoxelMapFactory.h"
 
+#include "VoxelMapActor.h"
+#include "VoxelMapComponent.h"
+
 #define LOCTEXT_NAMESPACE "VoxelMapEditor"
 
 //////////////////////////////////////////////////////////////////////////
@@ -56,14 +59,10 @@ FVoxelMapEditorViewportClient::FVoxelMapEditorViewportClient(TWeakPtr<FVoxelMapE
 	DrawHelper.bDrawGrid = true; //GetDefault<UVoxelMapEditorSettings>()->bShowGridByDefault;
 
 	// Create a render component for the VoxelMap being edited
-	RenderVoxelMapComponent = NewObject<UVoxelMapComponent>();
-	UBoxComponent* Box = NewObject<UBoxComponent>();
 	UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
+	RenderVoxelMap = PreviewScene->GetWorld()->SpawnActor<AVoxelMapActor>();
 
-	PreviewScene->AddComponent(RenderVoxelMapComponent, FTransform::Identity);
-	PreviewScene->AddComponent(Box, FTransform::Identity);
-
-	RenderVoxelMapComponent->SetVoxelMap(VoxelMap);
+	RenderVoxelMap->Map->SetVoxelMap(VoxelMap);
 }
 
 void FVoxelMapEditorViewportClient::DrawCanvas(FViewport& InViewport, FSceneView& View, FCanvas& Canvas)
@@ -122,7 +121,7 @@ void FVoxelMapEditorViewportClient::ToggleShowVoxelMapNames()
 
 FBox FVoxelMapEditorViewportClient::GetDesiredFocusBounds() const
 {
-	UVoxelMapComponent* ComponentToFocusOn = RenderVoxelMapComponent;
+	UVoxelMapComponent* ComponentToFocusOn = RenderVoxelMap->Map;
 	return ComponentToFocusOn->Bounds.GetBox();
 }
 
@@ -287,7 +286,7 @@ void FVoxelMapEditorViewportClient::NotifyVoxelMapBeingEditedHasChanged()
 	// Update components to know about the new VoxelMap being edited
 	UVoxelMap* VoxelMap = GetVoxelMapBeingEdited();
 
-	RenderVoxelMapComponent->SetVoxelMap(VoxelMap);
+	RenderVoxelMap->Map->SetVoxelMap(VoxelMap);
 	InternalActivateNewMode(CurrentMode);
 
 	if (VoxelMap != nullptr)

@@ -28,6 +28,8 @@ void FVoxelMapPager::pageIn(const FVoxelRegion& region, FVoxelVolume::Chunk* Chu
 			for (int z = region.getLowerZ(); z <= region.getUpperZ(); z++) {
 				FVoxel Voxel;
 
+				Voxel.setColor(FColor::White);
+
 				bool bSolid = (z < towerHeight);
 
 				int32 zMat = z + 1;
